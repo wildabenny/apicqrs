@@ -1,0 +1,23 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+    #parameter_name: value
+
+services:
+    app.create_product_handler:
+        class: AppBundle\Command\Product\CreateProductHandler
+        arguments: ["@doctrine.product"]
+        tags:
+            - {name: tactician.handler, command: AppBundle\Command\Product\CreateProductCommand}
+
+    doctrine.product:
+        class: AppBundle\Domain\DoctrineProduct
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    product.query:
+        class: AppBundle\Domain\DoctrineProductQuery
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    product.controller:
+        class: AppBundle\Controller\ProductsController
+        arguments: ["@product.query"]
